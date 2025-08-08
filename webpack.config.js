@@ -1,11 +1,12 @@
 /* eslint-disable no-undef */
 
+const path = require("path");
 const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const urlDev = "https://localhost:3000/";
-const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
+const urlProd = "https://josefpihlstrom.github.io/CATS_AddIn/"; // ✅ Updated for GitHub Pages
 
 async function getHttpsOptions() {
   const httpsOptions = await devCerts.getHttpsServerOptions();
@@ -22,6 +23,8 @@ module.exports = async (env, options) => {
       commands: "./src/commands/commands.js",
     },
     output: {
+      path: path.resolve(__dirname, 'docs'), // ✅ Output to docs/ for GitHub Pages
+      filename: '[name].bundle.js',
       clean: true,
     },
     resolve: {
@@ -52,9 +55,14 @@ module.exports = async (env, options) => {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        filename: "taskpane.html",
-        template: "./src/taskpane/taskpane.html",
+        filename: "taskpane.html", // ✅ Output file in docs/
+        template: "./src/taskpane/taskpane.html", // ✅ Source file
         chunks: ["polyfill", "taskpane"],
+      }),
+      new HtmlWebpackPlugin({
+        filename: "commands.html",
+        template: "./src/commands/commands.html",
+        chunks: ["polyfill", "commands"],
       }),
       new CopyWebpackPlugin({
         patterns: [
@@ -64,21 +72,14 @@ module.exports = async (env, options) => {
           },
           {
             from: "manifest*.xml",
-            to: "[name]" + "[ext]",
+            to: "[name][ext]",
             transform(content) {
-              if (dev) {
-                return content;
-              } else {
-                return content.toString().replace(new RegExp(urlDev, "g"), urlProd);
-              }
+              return dev
+                ? content
+                : content.toString().replace(new RegExp(urlDev, "g"), urlProd);
             },
           },
         ],
-      }),
-      new HtmlWebpackPlugin({
-        filename: "commands.html",
-        template: "./src/commands/commands.html",
-        chunks: ["polyfill", "commands"],
       }),
     ],
     devServer: {
