@@ -117,7 +117,7 @@ function runNewScript() {
         writeInCell(context,sheet,"F8","Absence");
         writeInCell(context,sheet,"G8","23");
         writeInCell(context,sheet,"B17","EndOfList")
-        writeInCell(context,sheet,"H17","Remaining")
+        writeInCell(context,sheet,"G17","Remaining")
         writeInCell(context,sheet,"G18","New Flex")
         formulaInCell(context,sheet,"H18",`=SUM(I18:AM18)`)
         writeInCell(context,sheet,"G19","Saved Flex")
@@ -126,7 +126,7 @@ function runNewScript() {
         formulaInCell(context,sheet,"H20",`=SUM(H18:H19)`)
 
         // Loops through and writes all summary formulas in column H
-        for (let rowIndex = 4; rowIndex <=16; rowIndex++) {
+        for (let rowIndex = 4; rowIndex <=17; rowIndex++) {
             const formula = `=SUM(I${rowIndex}:AM${rowIndex})`;
             await formulaInCell(context,sheet,`H${rowIndex}`,formula)
         }
