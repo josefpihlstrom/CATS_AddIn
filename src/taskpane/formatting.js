@@ -114,7 +114,7 @@ export function getDaysOfWeek(context, sheet, year, month, holidays,endOfList) {
         writeInCell(context, sheet, `${colLetter}3`, day);
         writeInCell(context, sheet, `${colLetter}4`, (isWeekend || isHoliday) ? 0 : 8);
 
-        const range = sheet.getRange(`${colLetter}2:${colLetter}${endOfList+1}`);
+        const range = sheet.getRange(`${colLetter}2:${colLetter}${endOfList}`);
         if (isWeekend) {
             range.format.fill.color = "#D3D3D3"; // gray
         } else if (isHoliday) {

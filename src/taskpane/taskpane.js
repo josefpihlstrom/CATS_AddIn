@@ -143,7 +143,7 @@ function runNewScript() {
         writeHolidaysToExcel(context,sheet,holidays,20);
 
         // Loops through and writes days, checking if days are weekends or holidays and updates accordingly
-        getDaysOfWeek(context,sheet,yearSelected,monthNumber,holidays,"17");
+        getDaysOfWeek(context,sheet,yearSelected,monthNumber,holidays,"18");
 
         // Updates sheet
         await context.sync();
@@ -170,7 +170,7 @@ function runUpdateScript() {
         const holidays = await getHolidays(yearSelected);
 
         // Update days of the month
-        getDaysOfWeek(context,sheet,yearSelected,monthNumber,holidays,endRow);
+        getDaysOfWeek(context,sheet,yearSelected,monthNumber,holidays,endRow+1);
 
         // Move value of Flex Result cell to Saved Cell
         const savedFlex = await readCell(context,sheet,`H${endRow+3}`);
